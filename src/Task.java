@@ -3,7 +3,7 @@ import java.util.Objects;
 public class Task {
     private String name;
     private String description;
-    private int id = -1;
+    private int id;
     private Status status;
 
     public Task(String name, String description, Status status) {
@@ -13,7 +13,7 @@ public class Task {
     }
 
     public enum Status {
-        NEW, IN_PROGRESS, DONE, DEFAULT;
+        NEW, IN_PROGRESS, DONE
     }
 
     public String getName() {

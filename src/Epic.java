@@ -2,15 +2,26 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task{
-    private ArrayList<Integer> subtasksIds;
+    private ArrayList<Integer> subtasksIds = new ArrayList<>();
 
-    public Epic(String name, String description, ArrayList<Integer> subtasks) {
-        super(name, description, Status.DEFAULT);
-        this.subtasksIds = subtasks;
+    public Epic(String name, String description) {
+        super(name, description, Status.NEW);
     }
 
     public ArrayList<Integer> getSubtasksIds() {
         return subtasksIds;
+    }
+
+    public void addSubtaskId(int id) {
+        subtasksIds.add(id);
+    }
+
+    public void deleteSubtaskId(int id) {
+        subtasksIds.remove(id);
+    }
+
+    public void removeAllSubtasksIds() {
+        subtasksIds.clear();
     }
     @Override
     public boolean equals(Object o) {
