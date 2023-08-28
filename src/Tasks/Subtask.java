@@ -1,11 +1,13 @@
+package Tasks;
+
 import java.util.Objects;
 
-public class Subtask extends Task{
+public class Subtask extends Task {
     private int epicId;
 
     public Subtask(String name, String description, Status status, int epicId) {
         super(name, description, status);
-        setEpicId(epicId);
+        this.epicId = epicId;
     }
 
     public int getEpicId() {
@@ -32,7 +34,7 @@ public class Subtask extends Task{
 
     @Override
     public String toString() {
-        return "Subtask{" +
+        return "Tasks.Subtask{" +
                 "name=" + '\'' + getName() + '\'' +
                 ", description=" + '\'' + getDescription() + '\'' +
                 ", id=" + getId() +

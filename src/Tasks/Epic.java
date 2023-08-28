@@ -1,7 +1,9 @@
+package Tasks;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Epic extends Task{
+public class Epic extends Task {
     private ArrayList<Integer> subtasksIds = new ArrayList<>();
 
     public Epic(String name, String description) {
@@ -25,6 +27,7 @@ public class Epic extends Task{
     public void removeAllSubtasksIds() {
         subtasksIds.clear();
     }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -41,7 +44,7 @@ public class Epic extends Task{
 
     @Override
     public String toString() {
-        return "Epic{" +
+        return "Tasks.Epic{" +
                 "name=" + '\'' + getName() + '\'' +
                 ", description=" + '\'' + getDescription() + '\'' +
                 ", id=" + getId() +
