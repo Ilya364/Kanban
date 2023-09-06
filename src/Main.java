@@ -27,58 +27,30 @@ public class Main {
         Subtask thirdSubtask = new Subtask("Выбрать книгу", "Дома есть пару хороших", Status.NEW, secondEpic.getId());
         manager.addSubtask(thirdSubtask);
 
-        for (Task task: manager.getTasks()) {
-            System.out.println(task);
-        }
-        for (Epic epic: manager.getEpics()) {
-            System.out.println(epic);
-        }
-        for (Subtask subtask : manager.getSubtasks()) {
-            System.out.println(subtask);
-        }
-        System.out.println("-------------------");
-
         Task newFirstTask = manager.getTask(0);
-        newFirstTask.setStatus(Status.IN_PROGRESS);
-        manager.updateTask(newFirstTask);
-
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
         Task newSecondTask = manager.getTask(1);
-        newSecondTask.setStatus(Status.DONE);
-        manager.updateTask(newSecondTask);
-
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
         Subtask newFirstSubtask = manager.getSubtask(3);
-        newFirstSubtask.setStatus(Status.DONE);
-        manager.updateSubtask(newFirstSubtask);
-
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
         Subtask newSecondSubtask = manager.getSubtask(4);
-        newSecondSubtask.setStatus(Status.IN_PROGRESS);
-        manager.updateSubtask(newSecondSubtask);
-
-        Subtask newThirdSubtask = manager.getSubtask(6);
-        newThirdSubtask.setStatus(Status.DONE);
-        manager.updateSubtask(newThirdSubtask);
-
-        for (Task task: manager.getTasks()) {
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
             System.out.println(task);
         }
-        for (Epic epic: manager.getEpics()) {
-            System.out.println(epic);
-        }
-        for (Subtask subtask : manager.getSubtasks()) {
-            System.out.println(subtask);
-        }
-
-        System.out.println("------------------------");
-        manager.removeEpic(2);
-        manager.removeTask(1);
-        for (Task task: manager.getTasks()) {
+        Subtask newThirdSubtask = manager.getSubtask(3);
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
             System.out.println(task);
-        }
-        for (Epic epic: manager.getEpics()) {
-            System.out.println(epic);
-        }
-        for (Subtask subtask : manager.getSubtasks()) {
-            System.out.println(subtask);
         }
     }
 }

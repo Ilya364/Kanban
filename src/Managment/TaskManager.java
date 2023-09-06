@@ -3,7 +3,6 @@ package Managment;
 import Tasks.Epic;
 import Tasks.Subtask;
 import Tasks.Task;
-
 import java.util.ArrayList;
 
 public interface TaskManager {
@@ -44,6 +43,4 @@ public interface TaskManager {
     void removeEpic(int id);
 
     ArrayList<Subtask> getEpicSubtasks(int id);
-
-    ArrayList<Task> getHistory();
 }

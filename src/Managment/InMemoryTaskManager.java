@@ -6,13 +6,13 @@ import Tasks.Subtask;
 import Tasks.Task;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class InMemoryTaskManager implements TaskManager{
-    private HashMap<Integer, Task> tasks = new HashMap<>();
-    private HashMap<Integer, Epic> epics = new HashMap<>();
-    private HashMap<Integer, Subtask> subtasks = new HashMap<>();
-
-    private ArrayList<Task> history = new ArrayList<>();
+    private final HashMap<Integer, Task> tasks = new HashMap<>();
+    private final HashMap<Integer, Epic> epics = new HashMap<>();
+    private final HashMap<Integer, Subtask> subtasks = new HashMap<>();
+    private final HistoryManager historyManager = Managers.getDefaultHistory();
     private int nextId = 0;
 
     @Override
@@ -74,36 +74,21 @@ public class InMemoryTaskManager implements TaskManager{
     @Override
     public Task getTask(int id) {
         Task task = tasks.get(id);
-        if (history.size() < 10) {
-            history.add(task);
-        } else {
-            history.remove(0);
-            history.add(task);
-        }
+        historyManager.add(task);
         return task;
     }
 
     @Override
     public Subtask getSubtask(int id) {
         Subtask subtask = subtasks.get(id);
-        if (history.size() < 10) {
-            history.add(subtask);
-        } else {
-            history.remove(0);
-            history.add(subtask);
-        }
+        historyManager.add(subtask);
         return subtask;
     }
 
     @Override
     public Epic getEpic(int id) {
         Epic epic = epics.get(id);
-        if (history.size() < 10) {
-            history.add(epic);
-        } else {
-            history.remove(0);
-            history.add(epic);
-        }
+        historyManager.add(epic);
         return epic;
     }
 
@@ -161,9 +146,8 @@ public class InMemoryTaskManager implements TaskManager{
         return subtasksByEpic;
     }
 
-    @Override
-    public ArrayList<Task> getHistory() {
-        return history;
+    public List<Task> getHistory() {
+        return historyManager.getHistory();
     }
 
     private void determineStatus(Epic epic) {
