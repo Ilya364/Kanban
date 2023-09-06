@@ -1,4 +1,4 @@
-import Managment.Manager;
+import Managment.InMemoryTaskManager;
 import Tasks.Epic;
 import Tasks.Status;
 import Tasks.Subtask;
@@ -6,7 +6,7 @@ import Tasks.Task;
 
 public class Main {
     public static void main(String[] args) {
-        Manager manager = new Manager();
+        InMemoryTaskManager manager = new InMemoryTaskManager();
 
         Task firstTask = new Task("Посмотреть кино", "Которое посоветовали", Status.NEW);
         Task secondTask = new Task("Тренировка", "Тренировка спины и ног", Status.NEW);
