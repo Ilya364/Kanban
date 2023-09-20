@@ -22,28 +22,33 @@ public class Main {
         manager.addSubtask(thirdSubtask);
 
         manager.getTask(0);
-        manager.getTask(0);
         manager.getTask(1);
         manager.getEpic(2);
-        manager.getSubtask(6);
         manager.getEpic(3);
         manager.getSubtask(4);
-        manager.getEpic(3);
         manager.getSubtask(5);
         manager.getSubtask(6);
-        manager.getSubtask(5);
-        for (Task task: manager.getHistory()) {
-            System.out.println(task);
-        }
-        System.out.println("--------------------------");
-        manager.removeTask(1);
-        for (Task task: manager.getHistory()) {
-            System.out.println(task);
-        }
-        System.out.println("--------------------------");
+        printHistory(manager);
+
+        manager.getSubtask(6);
+        manager.getSubtask(4);
+        manager.getEpic(3);
+        printHistory(manager);
+
+        manager.removeAllTasks();
+        printHistory(manager);
+
+        manager.removeSubtask(5);
+        printHistory(manager);
+
         manager.removeEpic(2);
+        printHistory(manager);
+    }
+
+    public static void printHistory(TaskManager manager) {
         for (Task task: manager.getHistory()) {
             System.out.println(task);
         }
+        System.out.println("-------------------------------------");
     }
 }
