@@ -279,6 +279,5 @@ public class FileBackedTasksManager extends InMemoryTasksManager{
         manager.getSubtask(subtask1.getId());
 
         TasksManager manager1 = loadFromFile(new File(System.getProperty("user.dir") + "\\" + filename));
-
     }
 }
