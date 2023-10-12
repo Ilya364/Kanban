@@ -3,8 +3,8 @@ package Tasks;
 import java.util.Objects;
 
 public class Task {
-    private String name;
-    private String description;
+    private final String name;
+    private final String description;
     private int id;
     private Status status;
 
@@ -54,11 +54,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return "Tasks.Task{" +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", id=" + id +
-                ", status=" + status +
-                '}';
+        return String.format("%s,%s,%s,%s,%s", id, TaskType.TASK, name, status, description);
     }
 }
