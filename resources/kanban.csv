@@ -5,5 +5,6 @@ id,type,name,status,description,epic
 3,EPIC,epic1,NEW,descriptionEpic1
 4,EPIC,epic2,NEW,descriptionEpic2
 5,SUBTASK,subtask1,DONE,descriptionSubtask1,4
+6,SUBTASK,subtask2,NEW,descriptionSubtask2,4
 
 0,3,1,2,4,5

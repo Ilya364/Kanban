@@ -104,6 +104,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager{
                         case SUBTASK:
                             Subtask subtask = (Subtask) manager.fromString(strTask);
                             manager.subtasks.put(subtask.getId(), subtask);
+                            manager.epics.get(subtask.getEpicId()).addSubtaskId(subtask.getId());
                             break;
                     }
                     if (manager.nextId <= id) {
@@ -124,7 +125,6 @@ public class FileBackedTasksManager extends InMemoryTasksManager{
                         manager.historyManager.add(epic);
                     } else {
                         Subtask subtask = manager.getSubtask(id);
-                        manager.epics.get(subtask.getEpicId()).addSubtaskId(subtask.getId());
                         manager.historyManager.add(subtask);
                     }
                 }
