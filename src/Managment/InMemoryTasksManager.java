@@ -16,7 +16,7 @@ public class InMemoryTasksManager implements TasksManager {
         }
     }
 
-    private void determineStatus(Epic epic) {
+    protected void determineStatus(Epic epic) {
         if (epic.getSubtasksIds().isEmpty()) {
             epic.setStatus(Status.NEW);
             return;

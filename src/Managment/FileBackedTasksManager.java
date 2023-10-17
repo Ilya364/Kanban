@@ -69,6 +69,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager{
                     break;
                 case EPIC:
                     task = new Epic(name, description);
+                    task.setStatus(status);
                     break;
             }
             if (task != null) {
@@ -118,13 +119,13 @@ public class FileBackedTasksManager extends InMemoryTasksManager{
             if (history != null) {
                 for (Integer id : historyFromString(history)) {
                     if (manager.tasks.get(id) != null) {  //Обращаюсь к мапам напрямую, т.к. методы получения
-                        Task task = manager.getTask(id);  //заполняют историю
+                        Task task = manager.tasks.get(id);  //заполняют историю
                         manager.historyManager.add(task);
                     } else if (manager.epics.get(id) != null) {
-                        Epic epic = manager.getEpic(id);
+                        Epic epic = manager.epics.get(id);
                         manager.historyManager.add(epic);
                     } else {
-                        Subtask subtask = manager.getSubtask(id);
+                        Subtask subtask = manager.subtasks.get(id);
                         manager.historyManager.add(subtask);
                     }
                 }
@@ -271,6 +272,8 @@ public class FileBackedTasksManager extends InMemoryTasksManager{
         manager.addEpic(epic2);
         Subtask subtask1 = new Subtask("subtask1", "descriptionSubtask1", Status.DONE, epic2.getId());
         manager.addSubtask(subtask1);
+        Subtask subtask2 = new Subtask("subtask2", "descriptionSubtask2", Status.DONE, epic2.getId());
+        manager.addSubtask(subtask2);
 
         manager.getTask(task1.getId());
         manager.getTask(task2.getId());
