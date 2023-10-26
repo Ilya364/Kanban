@@ -1,23 +1,29 @@
 package Tasks;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Objects;
 
 public class Epic extends Task {
+    private LocalDateTime endTime;
     private final ArrayList<Integer> subtasksIds = new ArrayList<>();
 
     public Epic(String name, String description) {
         super(name, description, Status.NEW);
     }
 
-    public ArrayList<Integer> getSubtasksIds() {
-        return subtasksIds;
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public void addSubtaskId(int id) {
         if (!subtasksIds.contains(id)) {
             subtasksIds.add(id);
         }
+    }
+
+    public ArrayList<Integer> getSubtasksIds() {
+        return subtasksIds;
     }
 
     public void removeSubtaskId(int id) {
@@ -34,7 +40,7 @@ public class Epic extends Task {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Epic epic = (Epic) o;
-        return Objects.equals(subtasksIds, epic.subtasksIds);
+        return Objects.equals(subtasksIds, epic.subtasksIds) && Objects.equals(endTime, epic.endTime);
     }
 
     @Override
@@ -44,7 +50,10 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return String.format("%s,%s,%s,%s,%s", getId(), TaskType.EPIC, getName(),
-                getStatus(), getDescription());
+        if (getStartTime() == null) {
+            return String.format("%s,%s,%s,%s,%s", getId(), TaskType.EPIC, getName(), getStatus(), getDescription());
+        }
+        return String.format("%s,%s,%s,%s,%s,%s,%s", getId(), TaskType.EPIC, getName(), getStatus(), getDescription(),
+                getStartTime(), getDuration().toMinutes());
     }
 }

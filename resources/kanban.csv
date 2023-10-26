@@ -1,10 +1,4 @@
-id,type,name,status,description,epic
-42,TASK,task1,DONE,descriptionTask1
-43,TASK,task2,NEW,descriptionTask2
-44,TASK,task3,IN_PROGRESS,descriptionTask2
-45,EPIC,epic1,NEW,descriptionEpic1
-46,EPIC,epic2,DONE,descriptionEpic2
-48,SUBTASK,subtask2,DONE,descriptionSubtask2,46
-47,SUBTASK,subtask1,DONE,descriptionSubtask1,46
+id,type,name,status,description,start_time,duration,epic
+0,TASK,name,NEW,description
 
-42,45,43,44,46,47
+0

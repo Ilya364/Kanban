@@ -1,4 +1,4 @@
-package Managment;
+package Managers.HistoryManagers;
 
 import Tasks.Task;
 import java.util.List;

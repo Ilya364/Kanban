@@ -1,4 +1,4 @@
-package Managment;
+package Managers.HistoryManagers;
 
 public class Node <T> {
     private T data;
