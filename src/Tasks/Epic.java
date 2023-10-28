@@ -16,6 +16,10 @@ public class Epic extends Task {
         this.endTime = endTime;
     }
 
+    public LocalDateTime getEndTime() {
+        return endTime;
+    }
+
     public void addSubtaskId(int id) {
         if (!subtasksIds.contains(id)) {
             subtasksIds.add(id);

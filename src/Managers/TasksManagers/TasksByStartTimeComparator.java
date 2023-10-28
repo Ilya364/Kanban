@@ -1,4 +1,6 @@
-package Tasks;
+package Managers.TasksManagers;
+
+import Tasks.Task;
 
 import java.util.Comparator;
 

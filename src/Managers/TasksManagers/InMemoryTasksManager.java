@@ -13,7 +13,7 @@ public class InMemoryTasksManager implements TasksManager {
     protected final Map<Integer, Subtask> subtasks = new HashMap<>();
     protected final HistoryManager historyManager = Managers.getDefaultHistory();
     protected int nextId = 0;
-    protected Set<Task> prioritizedTasks = new TreeSet<>(new TasksByStartTimeComparator());
+    protected final Set<Task> prioritizedTasks = new TreeSet<>(new TasksByStartTimeComparator());
 
     private void removeTasksFromHistory(TaskType taskType) {
         switch (taskType) {
@@ -58,7 +58,7 @@ public class InMemoryTasksManager implements TasksManager {
         }
     }
 
-    private void determineStartEndDuration(Epic epic) {
+    public void determineStartEndDuration(Epic epic) {
         LocalDateTime minTime = LocalDateTime.MAX;
         LocalDateTime maxTime = LocalDateTime.MIN;
         Duration duration = Duration.ofMinutes(0);
@@ -88,9 +88,6 @@ public class InMemoryTasksManager implements TasksManager {
     public boolean isTaskTimeValid(Task task) {
         if (task.getStartTime() == null) {
             return true;
-        }
-        if (task.getStartTime().isBefore(LocalDateTime.now())) {
-            return false;
         }
         ArrayList<Task> addedTasks = getPrioritizedTasks();
         int size = addedTasks.size();
@@ -153,11 +150,9 @@ public class InMemoryTasksManager implements TasksManager {
     public void removeAllTasks() {
         removeTasksFromHistory(TaskType.TASK); //
         tasks.clear();
-        List<Task> withoutTasks = prioritizedTasks.stream()
+        prioritizedTasks.retainAll(prioritizedTasks.stream()
                 .filter(element -> element instanceof Subtask)
-                .collect(Collectors.toList());
-        prioritizedTasks = new TreeSet<>(new TasksByStartTimeComparator());
-        prioritizedTasks.addAll(withoutTasks);
+                .collect(Collectors.toList()));
     }
 
     @Override
@@ -166,11 +161,9 @@ public class InMemoryTasksManager implements TasksManager {
         removeTasksFromHistory(TaskType.EPIC);
         subtasks.clear();
         epics.clear();
-        List<Task> withoutSubtasks = prioritizedTasks.stream()
+        prioritizedTasks.retainAll(prioritizedTasks.stream()
                 .filter(element -> !(element instanceof Subtask))
-                .collect(Collectors.toList());
-        prioritizedTasks = new TreeSet<>(new TasksByStartTimeComparator());
-        prioritizedTasks.addAll(withoutSubtasks);
+                .collect(Collectors.toList()));
     }
 
     @Override
@@ -180,12 +173,11 @@ public class InMemoryTasksManager implements TasksManager {
         for (Epic epic: epics.values()) {
             epic.removeAllSubtasksIds();
             determineStatus(epic);
+            determineStartEndDuration(epic);
         }
-        List<Task> withoutSubtasks = prioritizedTasks.stream()
+        prioritizedTasks.retainAll(prioritizedTasks.stream()
                 .filter(element -> !(element instanceof Subtask))
-                .collect(Collectors.toList());
-        prioritizedTasks = new TreeSet<>(new TasksByStartTimeComparator());
-        prioritizedTasks.addAll(withoutSubtasks);
+                .collect(Collectors.toList()));
     }
 
     @Override
@@ -282,6 +274,7 @@ public class InMemoryTasksManager implements TasksManager {
             Epic epic = epics.get(subtasks.get(id).getEpicId());
             epic.removeSubtaskId(id);
             determineStatus(epic);
+            determineStartEndDuration(epic);
             prioritizedTasks.remove(subtasks.get(id));
             subtasks.remove(id);
             historyManager.remove(id);

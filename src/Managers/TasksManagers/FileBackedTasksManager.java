@@ -100,7 +100,6 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
                 if (hasStartTimeAndDuration) {
                     epic.setStartTime(startTime);
                     epic.setDuration(Duration.ofMinutes(duration));
-                    epic.setEndTime(epic.getEndTime());
                 }
                 return epic;
         }
@@ -134,6 +133,7 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
                             Subtask subtask = (Subtask) manager.fromString(strTask);
                             manager.subtasks.put(subtask.getId(), subtask);
                             manager.epics.get(subtask.getEpicId()).addSubtaskId(subtask.getId());
+                            manager.determineStartEndDuration(manager.epics.get(subtask.getEpicId()));
                             manager.prioritizedTasks.add(subtask);
                             break;
                     }
@@ -285,14 +285,14 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         final String filename = "kanban.csv";
         TasksManager manager = loadFromFile(new File(System.getProperty("user.dir") + "\\resources\\"
                 + filename));
-        manager.removeAllEpics();
+/*        manager.removeAllEpics();
         manager.removeAllTasks();
-        manager.removeAllSubtasks();
+        manager.removeAllSubtasks();*/
 
         Task task1 = new Task("task1", "descriptionTask1", Status.DONE);
         Task task2 = new Task("task2", "descriptionTask2", Status.NEW);
         Task task3 = new Task("task3", "descriptionTask2", Status.IN_PROGRESS,
-                LocalDateTime.of(2023, Month.OCTOBER, 25, 20, 15), 50);
+                LocalDateTime.of(2023, Month.OCTOBER, 30, 20, 15), 50);
         Task task4 = new Task("task4", "descriptionTask4", Status.IN_PROGRESS);
 
         Epic epic1 = new Epic("epic1", "descriptionEpic1");

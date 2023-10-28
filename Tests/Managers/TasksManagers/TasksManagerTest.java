@@ -9,8 +9,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-abstract public class TasksManagerTest {
-    static TasksManager manager;
+abstract public class TasksManagerTest <T extends TasksManager> {
+    protected T manager;
 
     @Test
     void shouldAddAndReturnListOfTasks() {
@@ -195,7 +195,7 @@ abstract public class TasksManagerTest {
         manager.addTask(task2);
         manager.addTask(task3);
 
-        assertIterableEquals(new ArrayList<>(List.of(task1)), manager.getTasks());
+        assertIterableEquals(new ArrayList<>(List.of(task1, task3)), manager.getTasks());
     }
 
     @Test
@@ -212,7 +212,7 @@ abstract public class TasksManagerTest {
         manager.addSubtask(subtask2);
         manager.addSubtask(subtask3);
 
-        assertIterableEquals(new ArrayList<>(List.of(subtask1)), manager.getSubtasks());
+        assertIterableEquals(new ArrayList<>(List.of(subtask1, subtask3)), manager.getSubtasks());
     }
 
     @Test
@@ -407,6 +407,7 @@ abstract public class TasksManagerTest {
 
         assertIterableEquals(new ArrayList<>(List.of(subtask1, subtask2)), manager.getEpicSubtasks(epic.getId()));
     }
+
     @Test
     void shouldReturnEmptyListWhenInvalidId() {
         Epic epic = new Epic("name", "description");
