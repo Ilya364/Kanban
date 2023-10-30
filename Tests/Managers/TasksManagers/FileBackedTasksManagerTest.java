@@ -1,12 +1,9 @@
 package Managers.TasksManagers;
 
-import Tasks.Epic;
-import Tasks.Status;
-import Tasks.Subtask;
-import Tasks.Task;
+import Tasks.*;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import java.io.File;
 import java.time.LocalDateTime;
 import java.time.Month;
@@ -21,8 +18,11 @@ class FileBackedTasksManagerTest extends TasksManagerTest<FileBackedTasksManager
     @BeforeEach
     public void createManager() {
         manager = FileBackedTasksManager.loadFromFile(filename);
+    }
+
+    @AfterEach
+    public void removeAll () {
         manager.removeAllTasks();
-        manager.removeAllSubtasks();
         manager.removeAllEpics();
     }
 

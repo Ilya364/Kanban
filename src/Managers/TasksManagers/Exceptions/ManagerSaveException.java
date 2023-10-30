@@ -1,4 +1,4 @@
-package Managers.TasksManagers;
+package Managers.TasksManagers.Exceptions;
 
 public class ManagerSaveException extends RuntimeException {
     public ManagerSaveException(String message) {

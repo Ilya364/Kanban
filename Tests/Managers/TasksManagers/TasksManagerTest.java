@@ -1,5 +1,6 @@
 package Managers.TasksManagers;
 
+import Managers.TasksManagers.Exceptions.IllegalStartTimeException;
 import Tasks.*;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;
@@ -78,13 +79,10 @@ abstract public class TasksManagerTest <T extends TasksManager> {
         Task task3 = new Task("name", "description", Status.NEW);
         Subtask subtask1 = new Subtask("name", "description", Status.NEW, epic.getId(),
                 LocalDateTime.of(2023, Month.OCTOBER, 30, 15, 20), 40);
-        Subtask subtask2 = new Subtask("name", "description", Status.NEW, epic.getId(),
-                LocalDateTime.of(2023, Month.DECEMBER, 30, 15, 20), 40);
         manager.addTask(task1);
         manager.addTask(task2);
         manager.addTask(task3);
         manager.addSubtask(subtask1);
-        manager.addSubtask(subtask2);
         List<Task> prioritizedTasks = List.of(subtask1, task2, task1, task3);
 
         assertIterableEquals(prioritizedTasks, manager.getPrioritizedTasks());
@@ -184,18 +182,22 @@ abstract public class TasksManagerTest <T extends TasksManager> {
     }
 
     @Test
-    void shouldNotAddTaskWithInvalidStartEndTime() {
+    void shouldBeThrownWhenTaskWithInvalidStartEndTime() {
         Task task1 = new Task("name", "description", Status.NEW,
                 LocalDateTime.of(2023, Month.OCTOBER, 30, 20, 20), 50);
         Task task2 = new Task("name", "description", Status.NEW,
                 LocalDateTime.of(2023, Month.OCTOBER, 30, 20, 20), 50);
         Task task3 = new Task("name", "description", Status.NEW,
                 LocalDateTime.of(2020, Month.OCTOBER, 30, 20, 20), 50);
-        manager.addTask(task1);
-        manager.addTask(task2);
-        manager.addTask(task3);
+        final IllegalStartTimeException exception = assertThrows(
+                IllegalStartTimeException.class,
+                () -> {
+                    manager.addTask(task1);
+                    manager.addTask(task2);
+                    manager.addTask(task3);
+                });
 
-        assertIterableEquals(new ArrayList<>(List.of(task1, task3)), manager.getTasks());
+        assertEquals("Задача пересекается по времени с другими", exception.getMessage());
     }
 
     @Test
@@ -208,11 +210,15 @@ abstract public class TasksManagerTest <T extends TasksManager> {
                 LocalDateTime.of(2023, Month.OCTOBER, 30, 20, 20), 50);
         Subtask subtask3 = new Subtask("name", "description", Status.NEW, epic.getId(),
                 LocalDateTime.of(2020, Month.OCTOBER, 30, 20, 20), 50);
-        manager.addSubtask(subtask1);
-        manager.addSubtask(subtask2);
-        manager.addSubtask(subtask3);
+        final IllegalStartTimeException exception = assertThrows(
+                IllegalStartTimeException.class,
+                () -> {
+                    manager.addTask(subtask1);
+                    manager.addTask(subtask2);
+                    manager.addTask(subtask3);
+                });
 
-        assertIterableEquals(new ArrayList<>(List.of(subtask1, subtask3)), manager.getSubtasks());
+        assertEquals("Задача пересекается по времени с другими", exception.getMessage());
     }
 
     @Test

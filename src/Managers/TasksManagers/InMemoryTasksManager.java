@@ -1,6 +1,7 @@
 package Managers.TasksManagers;
 
 import java.util.*;
+import Managers.TasksManagers.Exceptions.IllegalStartTimeException;
 import Tasks.*;
 import Managers.HistoryManagers.HistoryManager;
 import java.time.Duration;
@@ -114,7 +115,7 @@ public class InMemoryTasksManager implements TasksManager {
         if (taskEndTime.isBefore(earliest) || taskStartTime.isAfter(latest)) {
             return true;
         } else if (size == 1) {
-            return false;
+            throw new IllegalStartTimeException("Задача пересекается по времени с другими");
         }
         for (int i = 0; i < indexOfLastTaskWithStartTime; i++) {
             LocalDateTime prevTaskEndTime = addedTasks.get(i).getEndTime();
@@ -123,7 +124,7 @@ public class InMemoryTasksManager implements TasksManager {
                 return true;
             }
         }
-        return false;
+        throw new IllegalStartTimeException("Задача пересекается по времени с другими");
     }
 
     @Override
