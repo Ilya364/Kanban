@@ -54,6 +54,7 @@ public class EpicAdapter extends TypeAdapter<Epic> {
                         break;
                     } else if (subtaskIds.length() == 1) {
                         int subId = Integer.parseInt(subtaskIds);
+                        epic.setId(subId);
                     } else {
                         String[] subIds = subtaskIds.split(",");
                         for (String id: subIds) {

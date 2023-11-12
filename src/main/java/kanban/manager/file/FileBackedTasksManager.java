@@ -7,7 +7,6 @@ import kanban.task.*;
 import java.io.*;
 import java.nio.file.*;
 import java.time.LocalDateTime;
-import java.time.Month;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -285,12 +284,12 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
     }
 
     public static void main(String[] args) {
-        final String filename = "kanban.csv";
+        /*final String filename = "kanban.csv";
         TasksManager manager = loadFromFile(new File(System.getProperty("user.dir") + "\\resources\\"
                 + filename));
-/*        manager.removeAllEpics();
+*//*        manager.removeAllEpics();
         manager.removeAllTasks();
-        manager.removeAllSubtasks();*/
+        manager.removeAllSubtasks();*//*
 
         Task task1 = new Task("task1", "descriptionTask1", Status.DONE);
         Task task2 = new Task("task2", "descriptionTask2", Status.NEW);
@@ -326,6 +325,6 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
         manager.getEpic(epic2.getId());
 
         TasksManager manager1 = loadFromFile(new File(System.getProperty("user.dir")
-                + "\\resources\\" + filename));
+                + "\\resources\\" + filename));*/
     }
 }

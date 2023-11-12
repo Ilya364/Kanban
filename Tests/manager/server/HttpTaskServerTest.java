@@ -343,7 +343,7 @@ public class HttpTaskServerTest {
         client.send(request, HttpResponse.BodyHandlers.ofString());
         
         Subtask subtask = new Subtask("name2", "desc2", Status.NEW, epic.getId());
-        json = gson.toJson(epic);
+        json = gson.toJson(subtask);
         body = HttpRequest.BodyPublishers.ofString(json);
         request = HttpRequest.newBuilder().uri(URI.create("http://localhost:8080/tasks/subtask")).POST(body).build();
         client.send(request, HttpResponse.BodyHandlers.ofString());
