@@ -10,7 +10,7 @@ public class Managers {
     private static final int PORT = 8079;
     
     public static TasksManager getDefault() throws IOException, InterruptedException {
-        URI uri = URI.create(localhost.toString() + PORT);
+        URI uri = URI.create(localhost.toString() + PORT + "/");
         return new HttpTaskManager(uri);
     }
 
