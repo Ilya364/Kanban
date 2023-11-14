@@ -6,11 +6,13 @@ import java.util.Objects;
 
 public class Epic extends Task {
     private LocalDateTime endTime;
-    public ArrayList<Integer> subtasksIds = new ArrayList<>();
+    private final ArrayList<Integer> subtasksIds = new ArrayList<>();
 
     public Epic(String name, String description) {
         super(name, description, Status.NEW);
     }
+    
+    public Epic(){}
 
     public void setEndTime(LocalDateTime endTime) {
         this.endTime = endTime;

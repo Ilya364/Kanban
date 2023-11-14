@@ -2,21 +2,10 @@ package manager.server;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import kanban.manager.adapter.EpicAdapter;
-import kanban.manager.adapter.SubtaskAdapter;
-import kanban.manager.adapter.TaskAdapter;
+import kanban.manager.adapter.*;
 import kanban.server.HttpTasksServer;
-import kanban.server.KVServer;
-import kanban.task.Epic;
-import kanban.task.Status;
-import kanban.task.Subtask;
-import kanban.task.Task;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.*;
-
+import kanban.task.*;
+import org.junit.jupiter.api.*;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -25,34 +14,22 @@ import java.net.http.HttpResponse;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class HttpTaskServerTest {
-    private static KVServer dataServer;
-    private static HttpTasksServer handleServer;
+    private HttpTasksServer handleServer;
     
-    private static HttpClient client = HttpClient.newBuilder().build();
+    private HttpClient client = HttpClient.newBuilder().build();
     
     
-    @BeforeAll
-    public static void createAll() throws IOException, InterruptedException {
-        dataServer = new KVServer();
-        dataServer.start();
+    @BeforeEach
+    public void createAll() throws IOException {
         handleServer = new HttpTasksServer();
         handleServer.start();
+        client = HttpClient.newBuilder().build();
     }
     @AfterEach
-    public void stopStartDataServer() throws IOException, InterruptedException {
-        dataServer.stop();
-        handleServer.stop();
-        dataServer = new KVServer();
-        dataServer.start();
-        handleServer = new HttpTasksServer();
-        handleServer.start();
-    }
-    
-    @AfterAll
-    public static void stopAll() {
-        dataServer.stop();
+    public void stopStartDataServer() {
         handleServer.stop();
     }
     

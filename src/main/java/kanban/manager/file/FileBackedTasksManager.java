@@ -59,12 +59,12 @@ public class FileBackedTasksManager extends InMemoryTasksManager {
                 if (hasStartTimeAndDuration) {
                     epicId = Integer.parseInt(taskProperties[7]);
                     task = new Subtask(name, description, status, epicId, startTime, duration);
-                    task.setId(id);
                 } else {
                     epicId = Integer.parseInt(taskProperties[5]);
                     task = new Subtask(name, description, status, epicId);
-                    task.setId(id);
+                    
                 }
+                task.setId(id);
                 break;
             case TASK:
                 if (hasStartTimeAndDuration) {

@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class EpicAdapter extends TypeAdapter<Epic> {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
+    
     @Override
     public void write(JsonWriter jsonWriter, Epic epic) throws IOException {
         jsonWriter.beginObject();
@@ -20,7 +22,6 @@ public class EpicAdapter extends TypeAdapter<Epic> {
         jsonWriter.name("status").value(epic.getStatus().toString());
         jsonWriter.name("subtasksIds").value(epic.getSubtasksIds().toString());
         if (epic.getStartTime() != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
             jsonWriter.name("startTime").value(epic.getStartTime().format(formatter));
             jsonWriter.name("duration").value(epic.getDuration().toMinutes());
         }
@@ -29,7 +30,7 @@ public class EpicAdapter extends TypeAdapter<Epic> {
     
     @Override
     public Epic read(JsonReader jsonReader) throws IOException {
-        final Epic epic = new Epic("", "");
+        final Epic epic = new Epic();
         epic.setId(-1);
         
         jsonReader.beginObject();
@@ -64,7 +65,6 @@ public class EpicAdapter extends TypeAdapter<Epic> {
                     }
                     break;
                 case "startTime":
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
                     LocalDateTime startTime = LocalDateTime.parse(jsonReader.nextString(), formatter);
                     epic.setStartTime(startTime);
                     break;

@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class TaskAdapter extends TypeAdapter<Task> {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
     @Override
     public void write(JsonWriter jsonWriter, Task task) throws IOException {
         jsonWriter.beginObject();
@@ -19,7 +20,6 @@ public class TaskAdapter extends TypeAdapter<Task> {
         jsonWriter.name("description").value(task.getDescription());
         jsonWriter.name("status").value(task.getStatus().toString());
         if (task.getStartTime() != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
             jsonWriter.name("startTime").value(task.getStartTime().format(formatter));
             jsonWriter.name("duration").value(task.getDuration().toMinutes());
         }
@@ -28,7 +28,7 @@ public class TaskAdapter extends TypeAdapter<Task> {
     
     @Override
     public Task read(JsonReader jsonReader) throws IOException {
-        final Task task = new Task("", "", Status.NEW);
+        final Task task = new Task();
         task.setId(-1);
         
         jsonReader.beginObject();
@@ -47,7 +47,6 @@ public class TaskAdapter extends TypeAdapter<Task> {
                     task.setStatus(Status.valueOf(jsonReader.nextString()));
                     break;
                 case "startTime":
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
                     LocalDateTime startTime = LocalDateTime.parse(jsonReader.nextString(), formatter);
                     task.setStartTime(startTime);
                     break;

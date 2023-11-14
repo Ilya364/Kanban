@@ -6,8 +6,11 @@ import java.io.IOException;
 import java.net.URI;
 
 public class Managers {
+    private static final URI localhost = URI.create("http://localhost:");
+    private static final int PORT = 8079;
+    
     public static TasksManager getDefault() throws IOException, InterruptedException {
-        URI uri = URI.create("http://localhost:8079/");
+        URI uri = URI.create(localhost.toString() + PORT);
         return new HttpTaskManager(uri);
     }
 

@@ -10,9 +10,8 @@ import com.google.gson.*;
 import com.sun.net.httpserver.*;
 import kanban.manager.exception.*;
 import kanban.manager.adapter.*;
+import kanban.manager.memory.InMemoryTasksManager;
 import kanban.manager.memory.TasksManager;
-import kanban.manager.file.FileBackedTasksManager;
-import kanban.manager.memory.Managers;
 import kanban.task.*;
 
 public class HttpTasksServer {
@@ -20,9 +19,9 @@ public class HttpTasksServer {
     private static final int BACKLOG = 0;
     private final HttpServer httpServer;
     private final String filename = "kanban.csv";
-    private TasksManager manager = Managers.getDefault();
+    private final TasksManager manager = new InMemoryTasksManager();
     
-    public HttpTasksServer() throws IOException, InterruptedException {
+    public HttpTasksServer() throws IOException {
         httpServer = HttpServer.create(new InetSocketAddress(PORT), BACKLOG);
         httpServer.createContext("/tasks", new HttpTasksHandler());
     }
@@ -68,7 +67,7 @@ public class HttpTasksServer {
             switch (taskType) {
                 case TASK:
                     if (manager.getTask(id) != null) {
-                        manager.updateTask((Task) task);
+                        manager.updateTask(task);
                     } else {
                         manager.addTask(task);
                     }
@@ -89,11 +88,11 @@ public class HttpTasksServer {
             }
         }
         
-        private void sendResponseBody(String response, HttpExchange exchange) throws IOException {
+        private void sendResponseBody(String response, HttpExchange exchange) {
             try (OutputStream os = exchange.getResponseBody()) {
                 os.write(response.getBytes());
             } catch (IOException e) {
-                System.out.println(e.getMessage());
+                throw new SendResponseException(e.getMessage());
             }
         }
         
@@ -207,7 +206,7 @@ public class HttpTasksServer {
                     case 5:
                         if (method == RequestMethod.GET) {
                             if (pathElements[3].equals("epic") && pathElements[2].equals("subtask")) {
-                                int id = -1;
+                                int id;
                                 try {
                                     id = Integer.parseInt(pathElements[4].substring("?id=".length()));
                                     if (manager.getEpic(id) == null) {

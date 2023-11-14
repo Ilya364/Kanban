@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
@@ -33,16 +34,35 @@ public class KVServer {
             RequestMethod method = RequestMethod.valueOf(h.getRequestMethod());
             if (RequestMethod.GET.equals(method)) {
                 String key = h.getRequestURI().getPath().substring("/load/".length());
-                System.out.println("key = " + key);
                 if (key.isEmpty()) {
                     System.out.println("Key для получения пустой. key указывается в пути: /load/{key}");
                     h.sendResponseHeaders(400, 0);
-                } else if (key.equals("all/")) {
-                    final String response = String.join(";", data.values());
-                    sendText(h, response);
-                } else {
-                    final String response = data.get(key);
-                    sendText(h, response);
+                    return;
+                }
+                String response;
+                switch (key) {
+                    case "all/":
+                        response = String.join(";", data.values());
+                        sendText(h, response);
+                        break;
+                    case "tasks":
+                        response = data.get(key);
+                        sendText(h, response);
+                        break;
+                    case "epics":
+                        response = data.values().stream()
+                                .filter(element -> element.contains("subtasksIds"))
+                                .collect(Collectors.joining(";"));
+                        sendText(h, response);
+                        break;
+                    default:
+                        if (data.containsKey(key)) {
+                            response = data.get(key);
+                            sendText(h, response);
+                        } else {
+                            h.sendResponseHeaders(404, 0);
+                        }
+                        break;
                 }
             }
         } finally {

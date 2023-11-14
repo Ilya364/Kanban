@@ -11,6 +11,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class SubtaskAdapter extends TypeAdapter<Subtask> {
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
+    
     @Override
     public void write(JsonWriter jsonWriter, Subtask subtask) throws IOException {
         jsonWriter.beginObject();
@@ -20,7 +22,6 @@ public class SubtaskAdapter extends TypeAdapter<Subtask> {
         jsonWriter.name("status").value(subtask.getStatus().toString());
         jsonWriter.name("epicId").value(subtask.getEpicId());
         if (subtask.getStartTime() != null) {
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
             jsonWriter.name("startTime").value(subtask.getStartTime().format(formatter));
             jsonWriter.name("duration").value(subtask.getDuration().toMinutes());
         }
@@ -29,7 +30,7 @@ public class SubtaskAdapter extends TypeAdapter<Subtask> {
     
     @Override
     public Subtask read(JsonReader jsonReader) throws IOException {
-        final Subtask subtask = new Subtask("", "", Status.NEW, -1);
+        final Subtask subtask = new Subtask();
         subtask.setId(-1);
         
         jsonReader.beginObject();
@@ -52,7 +53,6 @@ public class SubtaskAdapter extends TypeAdapter<Subtask> {
                     subtask.setEpicId(epicId);
                     break;
                 case "startTime":
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd, HH:mm");
                     LocalDateTime startTime = LocalDateTime.parse(jsonReader.nextString(), formatter);
                     subtask.setStartTime(startTime);
                     break;

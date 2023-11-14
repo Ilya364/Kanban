@@ -25,6 +25,8 @@ public class Task {
         this.description = description;
         this.status = status;
     }
+    
+    public Task(){}
 
     public void setStatus(Status status) {
         this.status = status;
