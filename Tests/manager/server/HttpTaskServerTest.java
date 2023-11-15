@@ -18,9 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class HttpTaskServerTest {
     private HttpTasksServer handleServer;
-    
     private HttpClient client = HttpClient.newBuilder().build();
-    
     
     @BeforeEach
     public void createAll() throws IOException {
@@ -28,6 +26,7 @@ public class HttpTaskServerTest {
         handleServer.start();
         client = HttpClient.newBuilder().build();
     }
+    
     @AfterEach
     public void stopStartDataServer() {
         handleServer.stop();

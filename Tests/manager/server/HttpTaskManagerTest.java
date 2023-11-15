@@ -13,6 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 
 public class HttpTaskManagerTest extends TasksManagerTest<HttpTaskManager> {
     private KVServer server;
+    
     @BeforeEach
     public void createManagerAndStartServer() throws IOException, InterruptedException {
         server = new KVServer();

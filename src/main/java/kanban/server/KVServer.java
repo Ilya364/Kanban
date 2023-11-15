@@ -4,6 +4,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -46,14 +47,24 @@ public class KVServer {
                         sendText(h, response);
                         break;
                     case "tasks":
-                        response = data.get(key);
-                        sendText(h, response);
+                        response = data.values().stream()
+                                .filter(element -> !(element.contains("subtasksIds") || element.contains("epicId")))
+                                .collect(Collectors.joining(";"));
+                        if (response.isEmpty()) {
+                            h.sendResponseHeaders(404, 0);
+                        } else {
+                            sendText(h, response);
+                        }
                         break;
                     case "epics":
                         response = data.values().stream()
                                 .filter(element -> element.contains("subtasksIds"))
                                 .collect(Collectors.joining(";"));
-                        sendText(h, response);
+                        if (response.isEmpty()) {
+                            h.sendResponseHeaders(404, 0);
+                        } else {
+                            sendText(h, response);
+                        }
                         break;
                     default:
                         if (data.containsKey(key)) {
@@ -77,7 +88,8 @@ public class KVServer {
                 h.sendResponseHeaders(403, 0);
                 return;
             }
-            if ("POST".equals(h.getRequestMethod())) {
+            RequestMethod method = RequestMethod.valueOf(h.getRequestMethod().toUpperCase(Locale.ROOT));
+            if (RequestMethod.POST.equals(method)) {
                 String key = h.getRequestURI().getPath().substring("/save/".length());
                 if (key.isEmpty()) {
                     System.out.println("Key для сохранения пустой. key указывается в пути: /save/{key}");
