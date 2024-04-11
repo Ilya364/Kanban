@@ -1,2 +1,2 @@
 # java-kanban
-Repository for homework project.
+Таск-трекер на основе методологии Kanban.
